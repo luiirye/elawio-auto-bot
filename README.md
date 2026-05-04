@@ -1,15 +1,10 @@
 # Elaw Io Auto Bot
 
-Automação em Python para atualização de fases no sistema Elaw, com leitura de dados por Excel e execução via Selenium.
-
-Projeto mantido como portfólio técnico com foco em:
-- organização de código;
-- fluxo automatizado ponta a ponta;
-- boas práticas para repositório público.
+Automação em Python para atualização de fases no sistema Elaw, com leitura de dados por Excel utilizando pandas e execução de comandos com base em elementos HTML e CSS com Selenium.
 
 ## Funcionalidades
 
-- Login automatizado no sistema.
+- Login automatizado no sistema com `selenium`.
 - Navegação em lote por URLs de pastas.
 - Alteração de fase por item (ID da fase no Excel).
 - Leitura de dados com `pandas`.
@@ -68,5 +63,4 @@ Colunas mínimas:
 
 ---
 
-Desenvolvido por **@Luiirye**  
-Assinatura técnica: código limpo, aprendizado contínuo e entrega com responsabilidade.
+Desenvolvido por [Luiirye](https://github.com/luiirye)
