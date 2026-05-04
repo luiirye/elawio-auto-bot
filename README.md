@@ -1,43 +1,72 @@
-# Elaw Io Auto Bot 
+# Elaw Io Auto Bot
 
-Este Projeto foi criado para desenvolver uma ferramenta de automação utilizando Python, Pandas e Selenium para otimizar a gestão de processos jurídicos no sistema Elaw. A automação lê dados de uma planilha de Excel (URLs de processos, credenciais e fases) e executa automaticamente as funções de login, navegação de pastas por URL e alteração de fases destas pastas.
+Automação em Python para atualização de fases no sistema Elaw, com leitura de dados por Excel e execução via Selenium.
 
-## Funcionalidades desenvolvidas
+Projeto mantido como portfólio técnico com foco em:
+- organização de código;
+- fluxo automatizado ponta a ponta;
+- boas práticas para repositório público.
 
-- **Login Automatizado:** Abertura de navegador e acesso ao sistema utilizando as credenciais e URLS fornecidas na planilha.
-- **Navegação em Massa:** Itera sobre uma lista de URLs de processos (pastas).
-- **Alteração de Fase:** Abre o menu de fases e seleciona a fase para ser altearada de forma automática.
-- **Leitura de Excel:** Integração com `pandas` para processamento de dados dinâmicos.
+## Funcionalidades
 
-## Tecnologias Utilizadas
+- Login automatizado no sistema.
+- Navegação em lote por URLs de pastas.
+- Alteração de fase por item (ID da fase no Excel).
+- Leitura de dados com `pandas`.
 
-- [Python 3.10+](https://www.python.org/) - Linguagem de programação utilizada
-- [Selenium 4.43.0](https://www.selenium.dev/) - Automação de navegador.
-- [Pandas 3.0.2](https://pandas.pydata.org/) - Manipulação e extração de dados do Excel.
-- [Openpyxl 3.1.5](https://openpyxl.readthedocs.io/) - Motor de leitura de planilhas `.xlsx`.
+## Tecnologias
 
-## Estrutura do Projeto
+- [Python 3.10+](https://www.python.org/)
+- [Selenium](https://www.selenium.dev/)
+- [Pandas](https://pandas.pydata.org/)
+- [Openpyxl](https://openpyxl.readthedocs.io/)
+
+## Estrutura
 
 ```text
 elawio-auto/
 ├── data/
-│   └── base.xlsx          # Planilha com os dados de entrada
+│   ├── __init__.py
+│   └── dados.py
 ├── src/
-│   ├── app/
-│   │   ├── browser.py     # Configuração do WebDriver (Selenium)
-│   │   ├── login.py       # Lógica de autenticação
-│   │   ├── processos.py   # Manipulação dos elementos do processo
-│   │   ├── alterar_fases.py # Lógica de clique e seleção de fases
-│   │   └── dados_excel.py # Classe de extração de dados via Pandas
-├── main.py                # Ponto de entrada da aplicação
-└── requirements.txt       # Dependências do projeto
+│   └── app/
+│       ├── browser.py
+│       ├── login.py
+│       ├── processos.py
+│       ├── alterar_fases.py
+│       └── dados_excel.py
+├── testes/
+│   └── test_imports.py
+├── main.py
+├── requirements.txt
+├── .env.example
+└── .gitignore
 ```
 
+## Como executar
+
+1. Crie e ative um ambiente virtual.
+2. Instale dependências:
+   - `pip install -r requirements.txt`
+3. Execute:
+   - `python main.py`
+4. Informe o caminho completo do Excel no terminal.
+
+## Formato esperado da planilha
+
+Colunas mínimas:
+- `urls`: primeira linha = URL da home; linhas seguintes = URLs das pastas;
+- `email`: credencial de login;
+- `senha`: credencial de login;
+- `valores` (ou `fase`/`fases`): IDs de fases, uma por pasta.
+
+## Segurança para repositório público
+
+- Nunca subir `.env`, credenciais reais ou planilhas sensíveis.
+- O projeto já ignora `.venv`, cache Python, `.env` e `*.xlsx`.
+- Mantenha no GitHub apenas dados de exemplo.
 
 ---
 
-*Este projeto foi feito com o intuíto de contribuir com as demandas do escritório de advocacia e principalmente para estudos e aprofundamento de meus conhecimentos*
-
----
-
-desenvolvido por @Luiirye
+Desenvolvido por **@Luiirye**  
+Assinatura técnica: código limpo, aprendizado contínuo e entrega com responsabilidade.

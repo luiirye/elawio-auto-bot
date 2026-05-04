@@ -20,69 +20,69 @@ class LeituraDeDados:
             print(f"Erro ao ler o arquivo: {erro}")
             
         return self.df
+
+    def _get_coluna(self, *nomes):
+        """
+        Busca coluna de forma case-insensitive e ignora espacos extras.
+        Ex.: "URLS", "urls", " Urls ".
+        """
+        if self.df is None:
+            return None
+
+        colunas_normalizadas = {
+            str(col).strip().lower(): col for col in self.df.columns
+        }
+
+        for nome in nomes:
+            coluna = colunas_normalizadas.get(str(nome).strip().lower())
+            if coluna is not None:
+                return coluna
+        return None
             
     def extrair_home_url(self):
         
         # Extrai a URL da página inicial para login
         
-        # Verifica se o DF existe e se a coluna 'urls'ou 'URLS' existe
-        if self.df is not None and ('urls' in self.df.columns or 'URLS' in self.df.columns):
-            # Caso sim, retorna o valor da primeira linha da coluna 'urls'
+        coluna_urls = self._get_coluna('urls')
+        if coluna_urls is not None:
             print("Coluna 'urls' encontrada. Extraindo URL da página inicial para login")
-            return self.df['urls'].iloc[0] # iloc[0] acessa a primeira linha da coluna 'urls'
-            # Retorna a primeira linha da coluna 'urls' (URL da página inicial para login)
-        else:
-            print("Coluna 'urls' não encontrada.")
-            return None
-            # Retorna vazaio caso o DF ou a coluna 'urls' não existam
+            return self.df[coluna_urls].iloc[0]
+
+        print("Coluna 'urls' não encontrada.")
+        return None
 
     def extrair_urls_pastas(self):
         
-        # Se não for vazia e a coluna 'urls existir, extrai as URLs das pastas a partir da SEGUNDA linha 
-        if self.df is not None and 'urls' in self.df.columns:
+        coluna_urls = self._get_coluna('urls')
+        if coluna_urls is not None:
             print("Coluna 'urls' encontrada. Extraindo URLs das pastas")
-            # A função dropna() é usada para remover valores ausentes (NaN) da série resultante, garantindo que apenas URLs válidas sejam retornadas.
-            # O método tolist() converte a série resultante em uma lista de URLs. 
-            urls_pastas = self.df['urls'].iloc[1:].dropna().tolist()
+            urls_pastas = self.df[coluna_urls].iloc[1:].dropna().tolist()
             return urls_pastas
-            # Retorna as URLs das pastas a partir da segunda linha da coluna 'urls', removendo valores ausentes e convertendo para uma lista.
-        else:
-            print("Coluna 'urls' não encontrada.")
-            return None
-        
-            
+
+        print("Coluna 'urls' não encontrada.")
+        return []
+
     def extrair_fases(self):
-        
-        # Fase extraída: Linha 26: PROCESSO CONCLUÍDO (PASTA ARQUIVDA) : bs-select-9-25
-        
-        # verfica se DF existe e se a coluna 'valores' existe.
-        if self.df is not None and 'valores' in self.df.columns:
-            # Existindo, retorna o valor da linha 26 da coluna 'valores' (Fase do processo)
-            print("Coluna encontrada, extraindo a fase")
-            fases = self.df['valores'].iloc[25]
-            print(f'fase extraída: {fases}')  
+        coluna_fases = self._get_coluna('valores', 'fases', 'fase')
+        if coluna_fases is not None:
+            print("Coluna de fases encontrada. Extraindo lista de fases.")
+            # Pula a linha de configuracao (mesmo padrao de URLs) e remove vazios.
+            fases = self.df[coluna_fases].iloc[1:].dropna().tolist()
             return fases
-            # Retorna a fase extraída e converte para uma lista
-        else:
-            print("Coluna 'valores' não encontrada.")
-            return None
-            
+
+        print("Coluna de fases não encontrada.")
+        return []
+
     def extrair_credenciais(self):
-        
-        # Verifica se o DF existe e se as colunas 'email' e 'senha' existem
-        if self.df is not None and 'email' in self.df.columns and 'senha' in self.df.columns:
+        coluna_email = self._get_coluna('email', 'e-mail')
+        coluna_senha = self._get_coluna('senha', 'password')
+        if coluna_email is not None and coluna_senha is not None:
             print("Colunas 'email' e 'senha' encontradas. Extraindo credenciais.")
-            email = self.df['email'].iloc[0]
-            
-            senha = self.df['senha'].iloc[0]
-            
-            # Retorna o email e a senha extraídos da primeira linha das colunas 'email' e 'senha', respectivamente.
+            email = self.df[coluna_email].iloc[0]
+            senha = self.df[coluna_senha].iloc[0]
             print(f"Email extraído: {email}")
             print(f"Senha extraída: {senha}")
-            
             return email, senha
 
-        else:
-            print("Colunas 'email' ou 'senha' não encontradas.")
-            return None, None
-        
+        print("Colunas 'email' ou 'senha' não encontradas.")
+        return None, None
